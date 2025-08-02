@@ -1,0 +1,132 @@
+<?php
+
+namespace App\Http\Controllers\Dashboard;
+
+use App\Models\Category;
+use Illuminate\Support\Str;
+use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Support\Facades\Storage;
+
+class CategoriesController extends Controller
+{
+    /**
+     * Display a listing of the resource.
+     */
+    public function index()
+    {
+        $categories = Category::all();
+        return view('dashboard.categories.index', compact('categories'));
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     */
+    public function create()
+    {
+        $parents = Category::all();
+        $category = new Category();
+        return view('dashboard.categories.create', compact('parents', 'category'));
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function store(Request $request)
+    {
+        $attributes = $request->validate(Category::rules());
+
+        $attributes['image'] = $this->uploadImage($request);
+
+        $attributes['slug'] = Str::slug($attributes['name']);
+        Category::create($attributes);
+
+        return redirect()->route('dashboard.categories.index')
+            ->with('success', 'Category created successfully');
+
+    }
+
+    /**
+     * Display the specified resource.
+     */
+    public function show(string $id)
+    {
+        //
+    }
+    /**
+
+     * Show the form for editing the specified resource.
+     */
+    public function edit(string $id)
+    {
+        try {
+            $category = Category::findOrFail($id);
+        } catch (ModelNotFoundException $e) {
+            return redirect()->route('dashboard.categories.index')
+                ->with('danger', 'Record not found');
+        }
+
+        $parents = Category::where('id', '!=', $id)
+            ->where(function ($query) use ($id) {
+                $query->where('parent_id', '!=', $id)
+                    ->orWhere('parent_id', null);
+            })
+            ->get();
+
+        return view('dashboard.categories.edit', compact('category', 'parents'));
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(Request $request, string $id)
+    {
+        $attributes = $request->validate(Category::rules($id));
+
+        $category = Category::findOrFail($id);
+
+        $attributes['image'] = $this->uploadImage($request, $category);
+
+        //delete old image
+        if (isset($category->image) && $category->image != $attributes['image'])
+            Storage::disk('public')->delete($category->image);
+
+
+        $attributes['slug'] = Str::slug($attributes['name']);
+
+
+        $category->update($attributes);
+        return redirect()->route('dashboard.categories.index')
+            ->with('success', 'Category updated successfully');
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(string $id)
+    {
+        $category = Category::findOrFail($id);
+        $category->delete();
+
+        //delete category image
+        if (isset($category->image))
+            Storage::disk('public')->delete($category->image);
+
+
+        return redirect()->route('dashboard.categories.index')
+            ->with('danger', 'Category deleted successfully');
+    }
+
+
+    protected function uploadImage(Request $request, $category = null)
+    {
+        if (!$request->hasFile('image')) {
+            return $category->image ?? null;
+        }
+
+        $file = $request->file('image');
+        $path = $file->store('categories', 'public');
+        return $path;
+    }
+}
