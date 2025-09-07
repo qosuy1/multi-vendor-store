@@ -16,16 +16,33 @@ class CategoriesController extends Controller
      */
     public function index(Request $request)
     {
-        // $query = Category::query();
 
-        # shortcut of this code usig [ local scope ]
+        ###############################################################
+        # shortcut of this code usig [ local scope ] in model
+        // $query = Category::query();
         // if ($name = $request->query('name'))
         //     $query->where('name', 'LIKE', "%$name%");
         // if ($status = $request->query('status'))
         //     $query->where('status', $status);
 
-        // dd($query);
-        $categories = Category::filter($request->query())->paginate(2);
+        ###############################################################
+        /* to show category parent name you have to methods :
+            [1] => make Elqountent Relationship ($this->belongTo()) in model
+            [2] => usign the query builder => join :
+
+                select categories.* , parents.name as parents_name
+                From categories LEFT JOIN categories as parents
+                ON parents.id = categories.name
+        */
+        $categories = Category::select([
+            'categories.*',
+            'parents.name as parents_name'
+        ])
+            ->leftJoin('categories as parents', 'parents.id', '=', 'categories.parent_id')
+            ->filter($request->query())
+            ->orderBy('name')
+            ->Paginate(2);
+
         return view('dashboard.categories.index', compact('categories'));
     }
 

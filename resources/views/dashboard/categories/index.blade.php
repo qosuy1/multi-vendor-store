@@ -36,7 +36,7 @@
                 <th>Image</th>
                 <th>ID</th>
                 <th>Name</th>
-                <th>Parent</th>
+                <th>Parent name</th>
                 <th>status</th>
                 <th>Created At</th>
                 <th colspan="2">Actions</th>
@@ -52,7 +52,7 @@
                     @endif
                     <td>{{ $category->id }}</td>
                     <td>{{ $category->name }}</td>
-                    <td class="text-muted">{{ $category->parent_id ?? 'null' }}</td>
+                    <td class="text-muted">{{ $category->parents_name ?? 'null' }}</td>
                     <td>{{ $category->created_at->format('Y-m-d') }}</td>
                     <td>{{ $category->status }}</td>
 
