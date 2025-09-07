@@ -7,7 +7,7 @@
 @section('breadcrumb')
     @parent
     <li class="breadcrumb-item active">Categories</li>
-    <!-- <li class="breadcrumb-item active"><a href="#">Starter Page</a></li> -->
+    {{-- <li class="breadcrumb-item active"><a href="#">Starter Page</a></li> --}}
 @endsection
 
 @section('content')
@@ -16,15 +16,19 @@
         <a href="{{ route('dashboard.categories.create') }}" class="btn btn-outline-primary">Create</a>
     </div>
 
-    @if (session('success'))
-        <div class="alert alert-success">
-            {{ session('success') }}
-        </div>
-    @elseif (session('danger'))
-        <div class="alert alert-danger">
-            {{ session('danger') }}
-        </div>
-    @endif
+    <x-alert type='success' />
+    <x-alert type='info' />
+
+    <form action="{{ url()->current() }}" method="get" class="d-flex justify-content-between mb-4">
+        <x-form.input name='name' placeholder="Name" :value="request('name')" />
+        <select name="status" class="form-control mx-2" id="">
+            <option value="">All</option>
+            <option value="active" @selected(request('status') == 'active')>Active</option>
+            <option value="archived" @selected(request('status') == 'archived')>Archived</option>
+        </select>
+
+        <button class='btn btn-dark '>Search</button>
+    </form>
 
     <table class="table">
         <thead>
@@ -70,6 +74,8 @@
                     <td colspan="6" class="text-center text-muted mt-5">No categories found</td>
                 </tr>
             @endforelse
+
         </tbody>
     </table>
+    {{ $categories->withQueryString()->links() }}
 @endsection

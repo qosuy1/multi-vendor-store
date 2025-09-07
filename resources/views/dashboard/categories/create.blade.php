@@ -1,12 +1,15 @@
 @extends('layouts.dashboard')
 
 
-@section('title', 'Categories')
+@section('title', 'Create Category')
 
 
 @section('breadcrumb')
     @parent
-    <li class="breadcrumb-item active">Categories</li>
+    {{-- <li class="breadcrumb-item active">Categories</li> --}}
+    <a class="breadcrumb-item" href="{{ route('dashboard.categories.index') }}">Categories</a>
+    <li class="breadcrumb-item active">Create Category</li>
+
     <!-- <li class="breadcrumb-item active"><a href="#">Starter Page</a></li> -->
 @endsection
 

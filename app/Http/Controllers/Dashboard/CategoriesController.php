@@ -14,9 +14,18 @@ class CategoriesController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $categories = Category::all();
+        // $query = Category::query();
+
+        # shortcut of this code usig [ local scope ]
+        // if ($name = $request->query('name'))
+        //     $query->where('name', 'LIKE', "%$name%");
+        // if ($status = $request->query('status'))
+        //     $query->where('status', $status);
+
+        // dd($query);
+        $categories = Category::filter($request->query())->paginate(2);
         return view('dashboard.categories.index', compact('categories'));
     }
 
@@ -64,7 +73,7 @@ class CategoriesController extends Controller
             $category = Category::findOrFail($id);
         } catch (ModelNotFoundException $e) {
             return redirect()->route('dashboard.categories.index')
-                ->with('danger', 'Record not found');
+                ->with('info', 'Record not found');
         }
 
         $parents = Category::where('id', '!=', $id)

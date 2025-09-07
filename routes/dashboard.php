@@ -16,12 +16,11 @@ Route::group(
     function () {
 
         Route::get('/', [DashboardController::class, 'index'])
-            ->name('dashboard');
+            ->name('index');
 
 
         // automatice name : categories.
         // automatice prefix : /categories
-
         Route::resource('categories', CategoriesController::class);
     }
 );

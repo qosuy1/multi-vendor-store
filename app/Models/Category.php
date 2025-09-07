@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -18,5 +19,16 @@ class Category extends Model
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'status' => 'required|in:active,archived',
         ];
+    }
+
+
+    function scopeFilter(Builder $builder, $filters)
+    {
+        $builder->when($filters['name'] ?? false, function ($builder, $value) {
+            $builder->where('name', 'LIKE', "%$value%");
+        });
+        $builder->when($filters['status'] ?? false, function ($builder, $value) {
+            $builder->where('status', $value);
+        });
     }
 }
