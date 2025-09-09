@@ -130,18 +130,45 @@ class CategoriesController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Category $category)
     {
-        $category = Category::findOrFail($id);
+        // $category = Category::findOrFail($id);
         $category->delete();
+
+        //delete category image
+        // if (isset($category->image))
+        //     Storage::disk('public')->delete($category->image);
+
+
+        return redirect()->route('dashboard.categories.index')
+            ->with('success', 'Category deleted successfully');
+    }
+
+
+    public function trash()
+    {
+        $deletedCategories = Category::onlyTrashed()->paginate();
+        return view('dashboard.categories.trash', ['categories' => $deletedCategories]);
+    }
+    public function restore($id)
+    {
+        $category = Category::onlyTrashed()->findOrFail($id);
+        $category->restore();
+        return redirect()->route('dashboard.categories.trash')
+            ->with('success', 'Category restored');
+    }
+    public function forseDelete($id)
+    {
+        $category = Category::onlyTrashed()->findOrFail($id);
+        $category->forceDelete();
 
         //delete category image
         if (isset($category->image))
             Storage::disk('public')->delete($category->image);
 
+        return redirect()->route('dashboard.categories.trash')
+            ->with('success', 'Category deleted forever!');
 
-        return redirect()->route('dashboard.categories.index')
-            ->with('danger', 'Category deleted successfully');
     }
 
 

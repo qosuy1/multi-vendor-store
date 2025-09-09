@@ -19,6 +19,10 @@ Route::group(
             ->name('index');
 
 
+        Route::get('/categories/trash' , [CategoriesController::class , 'trash'])->name('categories.trash');
+        Route::put('/categories/{category}/restore', [CategoriesController::class, 'restore'])->name('categories.restore');
+        Route::delete('/categories/{category}/force-delete', [CategoriesController::class, 'forseDelete'])->name('categories.force-delete');
+
         // automatice name : categories.
         // automatice prefix : /categories
         Route::resource('categories', CategoriesController::class);

@@ -19,7 +19,7 @@
         @csrf
         @include('dashboard.categories._form')
 
-        <button type="submit" class="btn btn-primary">Create Category</button>
+        {{-- <button type="submit" class="btn btn-primary">Create Category</button> --}}
     </form>
 
 
