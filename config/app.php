@@ -168,6 +168,7 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+        ...(class_exists($class = Bezhanov\Faker\Laravel\FakerServiceProvider::class) ? [$class] : [])
     ])->toArray(),
 
     /*
