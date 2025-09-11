@@ -40,8 +40,8 @@ class CategoriesController extends Controller
         ])
             ->leftJoin('categories as parents', 'parents.id', '=', 'categories.parent_id')
             ->filter($request->query())
-            ->orderBy('name')
-            ->Paginate(2);
+            ->orderBy('id','desc')
+            ->paginate(2);
 
         return view('dashboard.categories.index', compact('categories'));
     }
