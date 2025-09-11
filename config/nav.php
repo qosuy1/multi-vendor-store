@@ -28,7 +28,18 @@ return [
     [
         'icon' => 'nav-icon fas fa-tachometer-alt',
         'title' => 'Products',
-        'route' => 'dashboard.categories.index',
-        'badge' => 'new'
+        'route' => 'dashboard.products.index',
+        'active' => 'dashboard.products.*',
+
+        'subList' => [
+            [
+                'title' => 'new Category',
+                'route' => 'dashboard.products.create',
+            ],
+            [
+                'title' => 'show Products',
+                'route' => 'dashboard.products.index',
+            ]
+        ]
     ],
 ];

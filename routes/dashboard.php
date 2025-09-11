@@ -4,8 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Dashboard\DashboardController;
 use App\Http\Controllers\Dashboard\CategoriesController;
-
-
+use App\Http\Controllers\Dashboard\ProductController;
 
 Route::group(
     [
@@ -26,6 +25,8 @@ Route::group(
         // automatice name : categories.
         // automatice prefix : /categories
         Route::resource('categories', CategoriesController::class);
+        Route::resource('products', ProductController::class);
+
     }
 );
 
