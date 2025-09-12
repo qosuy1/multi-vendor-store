@@ -39,6 +39,7 @@
                 <th>ID</th>
                 <th>Name</th>
                 <th>Parent name</th>
+                <th>products count</th>
                 <th>status</th>
                 <th>Created At</th>
                 <th colspan="2">Actions</th>
@@ -53,10 +54,11 @@
                         <td></td>
                     @endif
                     <td>{{ $category->id }}</td>
-                    <td>{{ $category->name }}</td>
-                    <td class="text-muted">{{ $category->parents_name ?? 'null' }}</td>
-                    <td>{{ $category->created_at->format('Y-m-d') }}</td>
+                    <td> <a href="{{route('dashboard.categories.show' , $category->id)}}"> {{ $category->name }}</a>    </td>
+                    <td class="text-muted">{{ $category->parentCategory->name ?? 'null' }}</td>
+                    <td>{{ $category->products_count }}</td>
                     <td>{{ $category->status }}</td>
+                    <td>{{ $category->created_at->format('Y-m-d') }}</td>
 
                     <td>
                         <a href="{{ route('dashboard.categories.edit', $category->id) }}"
@@ -73,7 +75,7 @@
 
             @empty
                 <tr>
-                    <td colspan="6" class="text-center text-muted mt-5">No categories found</td>
+                    <td colspan="7" class="text-center text-muted mt-5">No categories found</td>
                 </tr>
             @endforelse
 

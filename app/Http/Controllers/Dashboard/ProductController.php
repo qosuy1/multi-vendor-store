@@ -21,7 +21,7 @@ class ProductController extends Controller
         //     $products = Product::where('store_id', $user->srore_id)->paginate();
         // else
 
-        $products = Product::paginate();
+        $products = Product::with(['store', 'category'])->paginate();
 
         return view(
             'dashboard.products.index',
@@ -58,10 +58,7 @@ class ProductController extends Controller
      */
     public function edit(string $id)
     {
-
         $products = Product::findOrFail($id);
- 
-
     }
 
     /**
