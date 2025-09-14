@@ -18,7 +18,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <!-- Theme style -->
-    <link rel="stylesheet" href="{{ url('dist/css/adminlte.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('dist/css/adminlte.min.css') }}">
 
     @stack('styles')
 </head>
@@ -194,7 +194,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                 alt="User Image">
                         </div>
                         <div class="info">
-                            <a href="#" class="d-block"> {{ Auth::user()->name }}</a>
+                            <a href="{{route('dashboard.profile.edit')}}" class="d-block"> {{ Auth::user()->name }}</a>
                             <form action="{{ route('logout') }}" method="post">
                                 {{-- <input type="hidden" name="__token" value="{{csrf_token()}}"> --}}
                                 {{-- {{csrf_field()}} --}}
@@ -286,11 +286,11 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <!-- REQUIRED SCRIPTS -->
 
     <!-- jQuery -->
-    <script src="{{ url('plugins/jquery/jquery.min.js') }}"></script>
+    <script src="{{ asset('plugins/jquery/jquery.min.js') }}"></script>
     <!-- Bootstrap 4 -->
-    <script src="{{ url('plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ asset('plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
     <!-- AdminLTE App -->
-    <script src="{{ url('dist/js/adminlte.min.js') }}"></script>
+    <script src="{{ asset('dist/js/adminlte.min.js') }}"></script>
 
     @stack('scripts')
 
