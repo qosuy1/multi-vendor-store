@@ -9,7 +9,7 @@
 
         <input type="radio" name="{{ $name }}" value="{{ $key }}"
             {{ $attributes->class(['form-check-input', 'is-invalid' => $errors->has($name)]) }}
-            {{ old($name, $value) ?? "active" == $key ? 'checked' : '' }} id="{{ $key }}-active">
+            {{ old($name, $value)  == $key ? 'checked' : '' }} id="{{ $key }}-active">
 
         <label class="form-check-label" for="{{ $key }}-active">{{ $keyValue }}</label>
     </div>

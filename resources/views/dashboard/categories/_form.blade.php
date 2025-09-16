@@ -33,9 +33,8 @@
         </div>
 
         <div class="form-group mb-3">
-            <label for="status">Status</label>
             <div class="mt-2">
-                <x-form.lable-input name="status" :options="['Active' => 'active', 'Archived' => 'archived']" :value="$category->status" />
+                <x-form.radio lable="Status" name="status" :options="['active' => 'Active', 'archived' => 'Archived']" :value="$category->status" />
             </div>
             <div class="mt-3">
                 <button type="submit" class="btn btn-primary">{{ $button_lable ?? 'Save' }}</button>
