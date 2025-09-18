@@ -57,7 +57,7 @@ return [
 
     'url' => env('APP_URL', 'http://localhost'),
 
-    'asset_url' => env('ASSET_URL'),
+    // 'asset_url' => env('ASSET_URL', 'http://localhost'),
 
     /*
     |--------------------------------------------------------------------------
@@ -72,6 +72,7 @@ return [
 
     'timezone' => 'Asia/Damascus',
 
+    'currency' => 'USD',
     /*
     |--------------------------------------------------------------------------
     | Application Locale Configuration
@@ -184,6 +185,7 @@ return [
 
     'aliases' => Facade::defaultAliases()->merge([
         // 'Example' => App\Facades\Example::class,
+        'Currency' => App\Helper\Currency::class
     ])->toArray(),
 
 ];
