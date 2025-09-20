@@ -11,7 +11,7 @@ Route::group(
     [
         'prefix' => 'dashboard',
         'as' => 'dashboard.',
-        'middleware' => ['auth']
+        'middleware' => ['auth' , 'check.user.type:admin,super_admin']
     ],
     function () {
 
