@@ -15,7 +15,7 @@ class StoreScope implements Scope
     public function apply(Builder $builder, Model $model): void
     {
         $user = Auth::user();
-        
+        // if the user is logged in and has a store_id, then add the store_id to the query
         if ($user && $user->store_id)
             $builder->where('store_id', $user->store_id);
     }
