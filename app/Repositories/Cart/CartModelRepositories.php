@@ -27,7 +27,7 @@ class CartModelRepositories implements CartRepositories
         }
         return Cart::create([
             'cookie_id' => $this->getCookieId(),
-            'user_id' => Auth::user()->id,
+            'user_id' => Auth::user()->id ?? null,
             'product_id' => $product->id,
             'quantity' => $quantity,
         ]);

@@ -10,11 +10,11 @@
         @if ($product->new)
             <span class="new-tag">New</span>
         @endif
-        <form action="{{ route('front.cart.store') }}" method="post" id="add-to-cart">
+        <form action="{{ route('front.cart.store') }}" method="post" >
             @csrf
             <input type="hidden" name="product_id" value="{{ $product->id }}">
             <div class="button">
-                <button type="submit" form="add-to-cart" class="btn"><i class="lni lni-cart"></i> Add to
+                <button type="submit" class="btn"><i class="lni lni-cart"></i> Add to
                     Cart</button>
             </div>
         </form>
