@@ -3,7 +3,10 @@
 namespace App\Models;
 
 use Illuminate\Support\Str;
+use Illuminate\Support\Carbon;
 use App\Observers\CartObserver;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Cookie;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -36,8 +39,24 @@ class Cart extends Model
         // static::creating(function(Cart $cart){
         //     $cart->id = Str::uuid();
         // });
+
+
+        // add GlobalScope to query the cookie_id every time
+        static::addGlobalScope('cookie_id' , function(Builder $builder){
+            $builder->where('cookie_id' , Cart::getCookieId());
+        });
     }
 
+    public static function getCookieId()
+    {
+        $cookieId = Cookie::get('cart_id');
+        if (!$cookieId) {
+            $cookieId = Str::uuid();
+            Cookie::queue('cart_id', $cookieId, Carbon::now()->addDays(30)->getTimestamp() - now()->getTimestamp());
+            // the cookie will be deleted after 30 days , or 30 * 24 * 60
+        }
+        return $cookieId;
+    }
 
     public function user()
     {
