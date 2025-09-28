@@ -10,7 +10,7 @@
         @if ($product->new)
             <span class="new-tag">New</span>
         @endif
-        <form action="{{ route('front.cart.store') }}" method="post" >
+        <form action="{{ route('front.cart.store') }}" method="post">
             @csrf
             <input type="hidden" name="product_id" value="{{ $product->id }}">
             <div class="button">
@@ -33,9 +33,9 @@
             <li><span>4.0 Review(s)</span></li>
         </ul>
         <div class="price">
-            <span>{{ Currency::fromat($product->price) }}</span>
+            <span>{{ Currency::format($product->price) }}</span>
             @if ($product->compare_price)
-                <span class="discount-price">{{ Currency::fromat($product->compare_price) }}</span>
+                <span class="discount-price">{{ Currency::format($product->compare_price) }}</span>
             @endif
         </div>
     </div>
