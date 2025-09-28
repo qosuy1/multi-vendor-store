@@ -41,22 +41,25 @@ class CartController extends Controller
         $product = Product::findOrFail($request->product_id);
         $this->cart->add($product, $request->quantity ?? 1);
 
-        return redirect()->back()->with('success', 'Product added to cart successfully');
+        if ($request->expectsJson())
+            return response()->json([
+                'message' => 'product added succssfully to cart',
+            ], 201);
+        else
+            return redirect()->back()->with('success', 'Product added to cart successfully');
     }
 
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request)
+    public function update(Request $request, $id)
     {
         $request->validate([
-            'product_id' => 'required|int|exists:products,id',
-            'quantity' => 'nullable|int|min:1',
+            'quantity' => 'required|int|min:1',
         ]);
 
-        $product = Product::findOrFail($request->product_id);
-        $this->cart->update($product, $request->quantity);
+        $this->cart->update($id, $request->quantity);
 
     }
 
@@ -66,5 +69,10 @@ class CartController extends Controller
     public function destroy(string $id)
     {
         $this->cart->delete($id);
+        return response()->json(
+            [
+                'message' => 'deleted succssfully'
+            ]
+        );
     }
 }
