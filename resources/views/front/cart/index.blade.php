@@ -38,7 +38,7 @@
                 <!-- End Cart List Title -->
                 <!-- Cart Single List list -->
                 @foreach ($cart->get() as $cartItem)
-                    <div class="cart-single-list">
+                    <div class="cart-single-list" id="{{ $cartItem->id }}">
                         <div class="row align-items-center">
                             <div class="col-lg-1 col-md-1 col-12">
                                 <a href="{{ route('front.products.show', $cartItem->product->slug) }}"><img
@@ -55,17 +55,19 @@
                             </div>
                             <div class="col-lg-2 col-md-2 col-12">
                                 <div class="count-input">
-                                    <input class="form-control" value="{{ $cartItem->quantity }}">
+                                    <input class="form-control item-quantity" data-id="{{ $cartItem->id }}"
+                                        value="{{ $cartItem->quantity }}">
                                 </div>
                             </div>
                             <div class="col-lg-2 col-md-2 col-12">
-                                <p>{{ Currency::fromat($cartItem->product->price) }}</p>
+                                <p>{{ Currency::format($cartItem->product->price) }}</p>
                             </div>
                             <div class="col-lg-2 col-md-2 col-12">
-                                <p>{{ Currency::fromat(0) }}</p>
+                                <p>{{ Currency::format(0) }}</p>
                             </div>
                             <div class="col-lg-1 col-md-2 col-12">
-                                <a class="remove-item" href="javascript:void(0)"><i class="lni lni-close"></i></a>
+                                <a class="remove-item" data-id="{{ $cartItem->id }}" href="javascript:void(0)"><i
+                                        class="lni lni-close"></i></a>
                             </div>
                         </div>
                     </div>
@@ -93,12 +95,12 @@
                             <div class="col-lg-4 col-md-6 col-12">
                                 <div class="right">
                                     <ul>
-                                        <li>Cart Subtotal<span>{{ Currency::fromat($cart->getTotalPrice()) }}</span>
+                                        <li>Cart Subtotal<span>{{ Currency::format($cart->getTotalPrice()) }}</span>
                                         </li>
                                         <li>Shipping<span>Free</span></li>
-                                        <li>You Save<span>{{ Currency::fromat(0) }}</span></li>
+                                        <li>You Save<span>{{ Currency::format(0) }}</span></li>
                                         <li class="last">You
-                                            Pay<span>{{ Currency::fromat($cart->getTotalPrice()) }}</span></li>
+                                            Pay<span>{{ Currency::format($cart->getTotalPrice()) }}</span></li>
                                     </ul>
                                     <div class="button">
                                         <a href="checkout.html" class="btn">Checkout</a>
@@ -115,5 +117,11 @@
     </div>
     <!--/ End Shopping Cart -->
 
-
+    @push('scripts')
+        <script>
+            const csrf_token = "{{ csrf_token() }}";
+        </script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    @endpush
+    @vite(['resources/js/cart.js'])
 </x-front-layout>
