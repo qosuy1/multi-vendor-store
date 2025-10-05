@@ -17,4 +17,5 @@ interface CartRepositories
     // public function total(): float;
     public function getTotalQuantity(): int;
     public function getTotalPrice(): float;
+    public function removeOrphanedItems() : void ;
 }

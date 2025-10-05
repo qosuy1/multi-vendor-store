@@ -33,8 +33,7 @@ class CartModelRepositories implements CartRepositories
         if ($item) {
             $item->quantity += $quantity;
             $item->save();
-        }
-        else {
+        } else {
             $item = Cart::create([
                 'user_id' => Auth::user()->id ?? null,
                 'product_id' => $product->id,
@@ -59,6 +58,12 @@ class CartModelRepositories implements CartRepositories
     {
         Cart::query()->delete();
     }
+
+    public function removeOrphanedItems(): void
+    {
+        // Remove cart items where the product no longer exists
+        Cart::whereDoesntHave('product')->delete();
+    }
     public function count(): int
     {
         return (int) Cart::query()->count();
@@ -79,7 +84,12 @@ class CartModelRepositories implements CartRepositories
         //     ->value('total');
 
         return $this->get()->sum(function ($item) {
-            return $item->quantity * $item->product->price;
+            // Check if product exists and has a price
+            if ($item->product && $item->product->price) {
+                return $item->quantity * $item->product->price;
+            }
+            // If product is null or has no price, return 0
+            return 0;
         });
     }
 

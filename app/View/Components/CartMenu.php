@@ -9,16 +9,19 @@ use Illuminate\View\Component;
 
 class CartMenu extends Component
 {
-    public $items ;
-    public $totalAmount ;
-    public $productsCount ;
+    public $items;
+    public $totalAmount;
+    public $productsCount;
     /**
      * Create a new component instance.
      */
     public function __construct(CartRepositories $cart)
     {
-        $this->items = $cart->get()->take(3) ;
-        $this->totalAmount  = $cart->getTotalPrice();
+        // Clean up orphaned cart items
+        $cart->removeOrphanedItems();
+
+        $this->items = $cart->get()->take(3);
+        $this->totalAmount = $cart->getTotalPrice();
         $this->productsCount = $cart->count();
     }
 
