@@ -2,24 +2,10 @@
 
 
     <x-slot name="breadcrumbs">
-        <div class="breadcrumbs">
-            <div class="container">
-                <div class="row align-items-center">
-                    <div class="col-lg-6 col-md-6 col-12">
-                        <div class="breadcrumbs-content">
-                            <h1 class="page-title">{{ $product->name }}</h1>
-                        </div>
-                    </div>
-                    <div class="col-lg-6 col-md-6 col-12">
-                        <ul class="breadcrumb-nav">
-                            <li><a href="{{ route('front.home') }}"><i class="lni lni-home"></i> Home</a></li>
-                            <li><a href="{{ route('front.products.index') }}">Shop</a></li>
-                            <li>{{ $product->name }}</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <x-frontend.breadcrumbs page_title="product">
+            <x-frontend.breadcrumb-item href="{{ route('front.home') }}">product</x-frontend.breadcrumb-item>
+            <x-frontend.breadcrumb-item>{{ $product->name }}</x-frontend.breadcrumb-item>
+        </x-frontend.breadcrumbs>
     </x-slot>
 
 
@@ -109,8 +95,8 @@
                                 <div class="row align-items-end">
                                     <div class="col-lg-4 col-md-4 col-12">
                                         <div class="button cart-button">
-                                            <button type="button" data-id="{{ $product->id }}"
-                                                class="btn add-to-cart" style="width: 100%;">Add to
+                                            <button type="button" data-id="{{ $product->id }}" class="btn add-to-cart"
+                                                style="width: 100%;">Add to
                                                 Cart</button>
                                         </div>
                                     </div>

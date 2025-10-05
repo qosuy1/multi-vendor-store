@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Dashboard;
 
+use App\Helper\UploadImageTrait;
 use App\Models\Product;
 use App\Models\Category;
 use Illuminate\Support\Str;
@@ -9,9 +10,12 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Tag;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Throwable;
 
 class ProductController extends Controller
 {
+    use UploadImageTrait;
     /**
      * Display a listing of the resource.
      */
@@ -24,7 +28,7 @@ class ProductController extends Controller
         //     $products = Product::where('store_id', $user->srore_id)->paginate();
         // else
 
-        $products = Product::with(['store', 'category'])->paginate();
+        $products = Product::with(['store', 'category'])->latest()->paginate();
 
         return view(
             'dashboard.products.index',
@@ -38,8 +42,8 @@ class ProductController extends Controller
     public function create()
     {
         $categories = Category::all();
-        $product = null ;
-        return view('dashboard.products.create' , compact('categories' )) ;
+        $product = null;
+        return view('dashboard.products.create', compact('categories'));
     }
 
     /**
@@ -47,7 +51,48 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $attributes = $request->validate([
+            'name' => 'string|required',
+            'category_id' => 'required|exists:categories,id',
+            'description' => 'string',
+            'price' => 'numeric|required',
+            'compare_price' => 'numeric|required',
+            'status' => 'required'
+        ]);
+        $attributes['slug'] = Str::slug($attributes['name']);
+        $attributes['store_id'] = auth()->user()->store_id ?? null;
+        $attributes['image'] = $this->uploadImage($request, 'products');
+
+        DB::beginTransaction();
+        try {
+
+            $product = Product::create($attributes);
+
+            $tags = json_decode($request->input('tags'));
+            $tag_ids = [];
+            $savedTags = Tag::all();
+            foreach ($tags as $item) {
+                $slug = Str::slug($item->value);
+                // here I filter using collection from the object not from database
+                $tag = $savedTags->where('slug', $slug)->first();
+                if (!$tag) {
+                    $tag = Tag::create(['slug' => $slug, 'name' => $item->value]);
+                }
+                $tag_ids[] = $tag->id;
+            }
+
+            $product->tags()->sync($tag_ids);   # to sync add and delete
+            DB::commit();
+
+        } catch (Throwable $e) {
+            DB::rollBack();
+            throw $e;
+        }
+
+        return redirect()
+            ->route('dashboard.products.index')
+            ->with('success', "product ` $product->id ` added succssfully");
+
     }
 
     /**
@@ -115,6 +160,13 @@ class ProductController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $product = Product::find($id);
+        $product->delete();
+        $this->deleteImage($product );
+
+        return redirect()
+            ->route('dashboard.products.index')
+            ->with('success', "product deleted succssfully");
+
     }
 }

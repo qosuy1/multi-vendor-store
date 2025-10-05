@@ -24,6 +24,7 @@ return new class extends Migration {
                 ->default(1);
             $table->json('options')->nullable();
             $table->timestamps();
+            $table->unique(['product_id', 'order_id']);
         });
     }
 

@@ -8,7 +8,8 @@
             <span class="sale-tag">-{{ $product->sale_percent }}%</span>
         @endif
         @if ($product->new)
-            <span class="new-tag">New</span>
+            <span class="new-tag"
+                style="position: relative;buttom: 0px;right: 0px;wid;top: 0px;/* bottom: 0px; */width: fit-content;height: fit-content;">New</span>
         @endif
         <form action="{{ route('front.cart.store') }}" method="post">
             @csrf

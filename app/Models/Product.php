@@ -69,8 +69,9 @@ class Product extends Model
             return 0;
         return round(100 - (100 * $this->price / $this->compare_price), 1);
     }
-    public function getNewAttribute(): bool
+    public function getNewAttribute()
     {
-        return $this->created_at > now();
+        // Return true if the product was created within the last 7 days
+        return $this->created_at >= now()->subDays(7) ;
     }
 }

@@ -42,8 +42,8 @@ class Cart extends Model
 
 
         // add GlobalScope to query the cookie_id every time
-        static::addGlobalScope('cookie_id' , function(Builder $builder){
-            $builder->where('cookie_id' , Cart::getCookieId());
+        static::addGlobalScope('cookie_id', function (Builder $builder) {
+            $builder->where('cookie_id', Cart::getCookieId());
         });
     }
 
@@ -74,6 +74,9 @@ class Cart extends Model
 
     public function product()
     {
-        return $this->belongsTo(Product::class);
+        return $this->belongsTo(Product::class)->withDefault([
+            'name' => 'Product not available',
+            'price' => 0,
+        ]);
     }
 }

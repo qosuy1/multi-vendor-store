@@ -16,7 +16,9 @@ class StoreScope implements Scope
     {
         $user = Auth::user();
         // if the user is logged in and has a store_id, then add the store_id to the query
-        if ($user && $user->store_id)
+        // Add condition to check if the user is in the dashboard (admin area)
+        if ($user && $user->store_id && request()->is('dashboard/*')) {
             $builder->where('store_id', $user->store_id);
+        }
     }
 }
