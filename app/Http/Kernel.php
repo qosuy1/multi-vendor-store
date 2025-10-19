@@ -39,6 +39,7 @@ class Kernel extends HttpKernel
             \App\Http\Middleware\VerifyCsrfToken::class,
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
             \App\Http\Middleware\UpdateUserLastActiveAt::class,    // should be under SartSession::class middleware
+            \App\Http\Middleware\MarkNotificationAsRead::class,
         ],
 
         'api' => [
