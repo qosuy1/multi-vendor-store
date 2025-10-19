@@ -16,15 +16,15 @@ use Illuminate\Queue\SerializesModels;
 class OrderCreated
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
-    public $order;
+    public $orders;
     public $cart ;
     /**
      * Create a new event instance.
      */
-    public function __construct($order , CartRepositories $cart)
+    public function __construct($orders , CartRepositories $cart)
     {
         $this->cart = $cart ;
-        $this->order = $order;
+        $this->orders = $orders;
     }
 
     /**

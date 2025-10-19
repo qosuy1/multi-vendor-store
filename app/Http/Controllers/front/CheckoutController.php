@@ -43,6 +43,11 @@ class CheckoutController extends Controller
         DB::beginTransaction();
 
         try {
+            // each order belong to store and every order have many product from the same store
+            // so user order can have many orders
+
+            // to store all the orders from all stores
+            $orders = [] ;
             foreach ($items as $store_id => $cart_items) {
                 $order = Order::create(
                     [
@@ -67,13 +72,16 @@ class CheckoutController extends Controller
                     $address['type'] = $type;
                     $order->addresses()->create($address);
                 }
+                $orders [] = $order ;
             }
+            // then collect all the orders
+            $orders = collect($orders) ;
             // to commit all the changes to database
             Db::commit();
 
             // this event clear the cart and deduct product Quantity
             // connect the event with listener in (EventServiceProvider)
-            event(new OrderCreated($order , $cart));
+            event(new OrderCreated($orders , $cart));
             // [[[[[  Another Way  ]]]]]
             // OrderCreated::dispatch($order , $cart);
 

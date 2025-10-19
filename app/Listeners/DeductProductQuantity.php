@@ -25,26 +25,36 @@ class DeductProductQuantity
      */
     public function handle(OrderCreated $event): void
     {
-        $order = $event->order;
+        $orders = $event->orders;
         // dd($order);
         // UPDATE products SET quantity = quantity - $cartItem->quantity
+        try {
 
-        // -------------[way 1]-----------
-        foreach ($order->products as $product) {
-            // $product->decrement($product->pivot->quantity);
-            $product->quantity = $product->quantity - $product->pivot->quantity;
-            $product->save();
+            foreach ($orders as $order) {
+                // -------------[way 1]-----------
+                foreach ($order->products as $product) {
+
+                    // -------------[way 1.1]-----------
+                    // $product->decrement($product->pivot->quantity);
+
+                    // -------------[way 1.2]-----------
+                    $product->quantity = $product->quantity - $product->pivot->quantity;
+                    $product->save();
+                }
+
+                // -------------[way 2]-----------
+                // $cart = new CartModelRepositories();
+                // foreach ($cart->get() as $cartItem) {
+                //     Product::where('id', $cartItem->product_id)
+                //         ->update(
+                //             [
+                //                 'quantity' => DB::raw("quantity - {$cartItem->quantity}")
+                //             ]
+                //         );
+                // }
+            }
+        } catch (\Throwable $th) {
+            throw $th;
         }
-
-        // -------------[way 2]-----------
-        // $cart = new CartModelRepositories();
-        // foreach ($cart->get() as $cartItem) {
-        //     Product::where('id', $cartItem->product_id)
-        //         ->update(
-        //             [
-        //                 'quantity' => DB::raw("quantity - {$cartItem->quantity}")
-        //             ]
-        //         );
-        // }
     }
 }
