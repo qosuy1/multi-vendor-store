@@ -29,7 +29,7 @@ class SendOrderCreatedNotification
             $user = User::where('store_id', $order->store_id)->first();
             // Notification::send($users, new OrderCreatedNotification($order));
             $user->notify(new OrderCreatedNotification($order));
-            sleep( 10);
+            // sleep( 10);
 
         }
     }

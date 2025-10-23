@@ -3,14 +3,17 @@
 namespace App\Models;
 
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Support\Facades\DB;
 
 class Order extends Model
 {
     use HasFactory;
     protected $fillable = [
         'user_id',
+        'store_id',
         'number',
         'payment_method',
         'status',
@@ -23,15 +26,30 @@ class Order extends Model
             // 20250001  20250002  20250003
             $order->number = Order::getNextOrderNumber();
         });
+
+        if (auth()->user() && (auth()->user()->type == 'admin' || auth()->user()->type == 'super_admin'))
+
+            static::addGlobalScope(function (Builder $builder) {
+                $builder->where('store_id', auth()->user()->store_id);
+            });
     }
 
     private static function getNextOrderNumber(): int
     {
         $year = Carbon::now()->year;
-        $number = Order::whereYear('created_at', $year)->max('number');
-        if ($number)
-            return $number + 1;
-        return (int) ($year . "0001");
+
+        // Use database lock to prevent race conditions
+        return DB::transaction(function () use ($year) {
+            $number = Order::lockForUpdate()
+                ->whereYear('created_at', $year)
+                ->max('number');
+
+            if ($number) {
+                return $number + 1;
+            }
+
+            return (int) ($year . "0001");
+        });
     }
 
 
@@ -69,7 +87,7 @@ class Order extends Model
 
     public function billingAddress()
     {
-        return $this->hasOne(OrderAddress::class , 'order_id' , 'id')
+        return $this->hasOne(OrderAddress::class, 'order_id', 'id')
             ->where('type', '=', 'billing');
     }
 

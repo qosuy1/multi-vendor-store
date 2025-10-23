@@ -4,9 +4,10 @@ namespace App\Notifications;
 
 use App\Models\Order;
 use Illuminate\Bus\Queueable;
+use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
-use Illuminate\Notifications\Notification;
+use Illuminate\Notifications\Messages\BroadcastMessage;
 
 class OrderCreatedNotification extends Notification
 {
@@ -28,7 +29,7 @@ class OrderCreatedNotification extends Notification
      */
     public function via(object $notifiable): array
     {
-        return ['mail', 'database'];
+        return [/*'mail',*/ 'database', 'broadcast'];
     }
 
     public function toDatabase(object $notifiable)
@@ -39,6 +40,17 @@ class OrderCreatedNotification extends Notification
             'url' => url('/dashboard'),
             'order_id' => $this->order->number
         ];
+    }
+
+    public function toBroadcast(object $notifiable)
+    {
+        $order_number = $this->order->number ;
+        return new BroadcastMessage([
+            'title' => "new Order Created #{$order_number}",
+            'body' => "You have a new order #{$order_number} .",
+            'products_count' => $this->order->orderItems()->count(),
+            'type' => 'success', // or 'error', 'warning', 'info'
+        ]);
     }
 
     /**

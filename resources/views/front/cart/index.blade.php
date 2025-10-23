@@ -103,8 +103,8 @@
                                             Pay<span>{{ Currency::format($cart->getTotalPrice()) }}</span></li>
                                     </ul>
                                     <div class="button">
-                                        <a href="checkout.html" class="btn">Checkout</a>
-                                        <a href="product-grids.html" class="btn btn-alt">Continue shopping</a>
+                                        <a href="{{ route('front.checkout.show') }}" class="btn">Checkout</a>
+                                        <a href="{{ route('front.home') }}" class="btn btn-alt">Continue shopping</a>
                                     </div>
                                 </div>
                             </div>

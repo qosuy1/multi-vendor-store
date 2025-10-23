@@ -6,12 +6,13 @@ use App\Http\Controllers\Dashboard\ProductController;
 use App\Http\Controllers\Dashboard\ProfileController;
 use App\Http\Controllers\Dashboard\DashboardController;
 use App\Http\Controllers\Dashboard\CategoriesController;
+use App\Http\Controllers\Dashboard\OrderController;
 
 Route::group(
     [
         'prefix' => 'dashboard',
         'as' => 'dashboard.',
-        'middleware' => ['auth' , 'check.user.type:admin,super_admin']
+        'middleware' => ['auth', 'check.user.type:admin,super_admin']
     ],
     function () {
 
@@ -27,6 +28,8 @@ Route::group(
         // automatice prefix : /categories
         Route::resource('categories', CategoriesController::class);
         Route::resource('products', ProductController::class);
+        Route::resource('orders', OrderController::class);
+
 
         Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
         Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');

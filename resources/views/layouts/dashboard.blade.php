@@ -19,6 +19,11 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
     <!-- Theme style -->
     <link rel="stylesheet" href="{{ asset('dist/css/adminlte.min.css') }}">
+    {{-- for laravel-notify --}}
+    {{-- <link rel="stylesheet" href="{{ asset('vendor/mckenziearts/laravel-notify/dist/notify.css') }}"> --}}
+
+    {{-- use toastify for notifications --}}
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
 
     @stack('styles')
 </head>
@@ -133,7 +138,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                     </div>
                 </li>
                 <!-- Notifications Dropdown Menu -->
-                <x-dashboard.notifications-menu count="10"/>
+                <x-dashboard.notifications-menu count="10" />
                 <li class="nav-item">
                     <a class="nav-link" data-widget="fullscreen" href="#" role="button">
                         <i class="fas fa-expand-arrows-alt"></i>
@@ -169,7 +174,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                 alt="User Image">
                         </div>
                         <div class="info">
-                            <a href="{{route('dashboard.profile.edit')}}" class="d-block"> {{ Auth::user()->name }}</a>
+                            <a href="{{ route('dashboard.profile.edit') }}" class="d-block">
+                                {{ Auth::user()->name }}</a>
                             <form action="{{ route('logout') }}" method="post">
                                 {{-- <input type="hidden" name="__token" value="{{csrf_token()}}"> --}}
                                 {{-- {{csrf_field()}} --}}
@@ -267,8 +273,13 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <!-- AdminLTE App -->
     <script src="{{ asset('dist/js/adminlte.min.js') }}"></script>
 
+    {{-- for laravel-notify --}}
+    <script>
+        const user_id = {{ Auth::id() }};
+    </script>
+    @vite('resources/js/app.js')
     @stack('scripts')
-
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
 </body>
 
 </html>

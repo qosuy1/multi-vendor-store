@@ -166,10 +166,11 @@ return [
          */
         App\Providers\AppServiceProvider::class,
         App\Providers\AuthServiceProvider::class,
-        // App\Providers\BroadcastServiceProvider::class,
+        App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         App\Providers\CartServiceProvider::class,
+        Mckenziearts\Notify\LaravelNotifyServiceProvider::class,
         ...(class_exists($class = Bezhanov\Faker\Laravel\FakerServiceProvider::class) ? [$class] : [])
     ])->toArray(),
 

@@ -52,7 +52,7 @@
                 <span class="total-amount">{{ Currency::format($totalAmount) }}</span>
             </div>
             <div class="button">
-                <a href="checkout.html" class="btn animate">Checkout</a>
+                <a href="{{ route('front.checkout.show') }}" class="btn animate">Checkout</a>
             </div>
         </div>
     @else

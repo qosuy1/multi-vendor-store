@@ -42,4 +42,21 @@ return [
             ]
         ]
     ],
+    [
+        'icon' => 'nav-icon fas fa-tachometer-alt',
+        'title' => 'Orders',
+        'route' => 'dashboard.orders.index',
+        'active' => 'dashboard.orders.*',
+
+        'subList' => [
+            [
+                'title' => 'new Order',
+                'route' => 'dashboard.orders.create',
+            ],
+            [
+                'title' => 'show orders',
+                'route' => 'dashboard.orders.index',
+            ]
+        ]
+    ],
 ];
