@@ -86,18 +86,35 @@
                     </div>
                     <div class="col-lg-4 col-md-4 col-12">
                         <div class="top-end">
-                            <div class="user">
-                                <i class="lni lni-user"></i>
-                                Hello
-                            </div>
+                            @auth('web')
                             <ul class="user-login">
-                                <li>
-                                    <a href="login.html">Sign In</a>
+                                <li class="user">
+                                    <i class="lni lni-user"></i>
+                                    Hello , {{ Auth::user()->name }}
                                 </li>
-                                <li>
-                                    <a href="register.html">Register</a>
-                                </li>
-                            </ul>
+                                    <li>
+                                        <a href="javascript:void(0)"
+                                            onclick="event.preventDefault(); document.getElementById('logout-form').submit(); return false;">Sign
+                                            Out</a>
+                                        <form action="{{ route('logout') }}" method="post" id="logout-form"
+                                            style="display: none;">@csrf
+                                        </form>
+                                    </li>
+                                </ul>
+                            @else
+                                <div class="user">
+                                    <i class="lni lni-user"></i>
+                                    Hello Guest
+                                </div>
+                                <ul class="user-login">
+                                    <li>
+                                        <a href="{{ route('login') }}">Sign In</a>
+                                    </li>
+                                    <li>
+                                        <a href="{{ route('register') }}">Register</a>
+                                    </li>
+                                </ul>
+                            @endauth
                         </div>
                     </div>
                 </div>
@@ -111,7 +128,7 @@
                     <div class="col-lg-3 col-md-3 col-7">
                         <!-- Start Header Logo -->
                         <a class="navbar-brand" href="index.html">
-                            <img src="{{asset("assets/images/logo/logo.svg")}}" alt="Logo">
+                            <img src="{{ asset('assets/images/logo/logo.svg') }}" alt="Logo">
                         </a>
                         <!-- End Header Logo -->
                     </div>

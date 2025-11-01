@@ -10,9 +10,9 @@ use App\Http\Controllers\Dashboard\OrderController;
 
 Route::group(
     [
-        'prefix' => 'dashboard',
+        'prefix' => 'admin/dashboard',
         'as' => 'dashboard.',
-        'middleware' => ['auth', 'check.user.type:admin,super_admin']
+        'middleware' => ['auth:admin' /*, 'check.user.type:admin,super_admin'*/]
     ],
     function () {
 

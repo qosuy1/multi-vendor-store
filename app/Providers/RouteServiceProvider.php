@@ -17,8 +17,8 @@ class RouteServiceProvider extends ServiceProvider
      *
      * @var string
      */
-    public const HOME = '/dashboard';   # when you authentected it will redirect to dashboard
-
+    public const HOME = '/';   # when you authentected it will redirect to dashboard
+    public const DASHBOARD = '/admin/dashboard';   # when you authentected it will redirect to dashboard
     /**
      * Define your route model bindings, pattern filters, and other route configuration.
      */

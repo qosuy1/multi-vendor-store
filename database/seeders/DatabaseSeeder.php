@@ -4,9 +4,10 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
-use App\Models\Category;
-use App\Models\Product;
+use App\Models\Admin;
 use App\Models\Store;
+use App\Models\Product;
+use App\Models\Category;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 
@@ -25,7 +26,7 @@ class DatabaseSeeder extends Seeder
 
         // Store::factory(5)->create();
         // Category::factory(10)->create();
-        Product::factory(100)->create();
+        // Product::factory(100)->create();
         // \App\Models\User::factory()->create([
         //     'name' => 'Test User',
         //     'email' => 'test@example.com',
@@ -38,5 +39,6 @@ class DatabaseSeeder extends Seeder
         //     'password' => Hash::make('321321321'),
         //     'store_id' => 4
         // ]);
+        Admin::factory(10)->create();
     }
 }

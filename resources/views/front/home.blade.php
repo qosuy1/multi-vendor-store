@@ -377,7 +377,7 @@
     <!-- End Banner Area -->
 
     <!-- Start Special Offer -->
-    <section class="special-offer section">
+    {{-- <section class="special-offer section">
         <div class="container">
             <div class="row">
                 <div class="col-12">
@@ -547,7 +547,7 @@
                 </div>
             </div>
         </div>
-    </section>
+    </section> --}}
     <!-- End Special Offer -->
 
     <!-- Start Home Product List -->

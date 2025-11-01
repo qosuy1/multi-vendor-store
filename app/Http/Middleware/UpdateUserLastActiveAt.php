@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\User;
 use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -17,9 +18,11 @@ class UpdateUserLastActiveAt
     {
         $user = $request->user();
         // dd($user);
-        if ($user) {
-            $user->forceFill(['last_active_at' => now()])->save();
-            // now() function or Carbon::now() function
+        if ($user instanceof User) {
+            if ($user) {
+                $user->forceFill(['last_active_at' => now()])->save();
+                // now() function or Carbon::now() function
+            }
         }
         return $next($request);
     }
